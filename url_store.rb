@@ -7,7 +7,8 @@ class URLStore
 
   VALID_NAME_REGEX = /^[a-zA-Z0-9_-]+$/
   VALID_GENERATED_CHARS = ('a'..'z').to_a + ('A'..'Z').to_a + ('0'..'9').to_a
-  GENERATED_LENGTH = 2
+  GENERATED_LENGTH_START = 2
+  RETRIES_EACH_LENGTH = 10
   URL_PREFIX_TEST_REGEX = /^[a-zA-Z]*:\/\//
 
   def initialize
@@ -23,7 +24,7 @@ class URLStore
     raise Exception, 'Must provide a URL. ' if url.nil?
     raise Exception, 'Invalid name. ' unless (name.nil? || self.class.valid_name?(name))
 
-    name ||= generate_name
+    name ||= generate_usable_name
     url = normalize_url(url)
 
     result = @redis.setnx(redis_key(name), url)
@@ -49,14 +50,18 @@ class URLStore
     end
 
     def generate_usable_name
-      while true do
-        name = generate_name
-        return name if @redis.get(name).nil?
+      len = GENERATED_LENGTH_START
+      while true
+        RETRIES_EACH_LENGTH.times do
+          name = generate_name(len)
+          return name if @redis.get(redis_key(name)).nil?
+        end
+        len += 1
       end
     end
 
-    def generate_name
-      (0...GENERATED_LENGTH).to_a.map { VALID_GENERATED_CHARS.sample }.join
+    def generate_name(len)
+      (0...len).to_a.map { VALID_GENERATED_CHARS.sample }.join
     end
 
     def normalize_url(url)
