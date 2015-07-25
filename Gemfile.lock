@@ -1,11 +1,34 @@
+GIT
+  remote: git://github.com/rstacruz/sinatra-assetpack.git
+  revision: 391084e3da1403f4965cf1151d0d6295e3740f7f
+  specs:
+    sinatra-assetpack (0.3.3)
+      jsmin
+      rack-test
+      sinatra
+      tilt (>= 1.3.0, < 2.0)
+
 GEM
   remote: https://rubygems.org/
   specs:
     backports (3.6.5)
+    capybara (2.4.4)
+      mime-types (>= 1.16)
+      nokogiri (>= 1.3.3)
+      rack (>= 1.0.0)
+      rack-test (>= 0.5.4)
+      xpath (~> 2.0)
     diff-lcs (1.2.5)
     fakeredis (0.5.0)
       redis (~> 3.0)
+    haml (4.0.6)
+      tilt
+    jsmin (1.0.1)
+    mime-types (2.6.1)
+    mini_portile (0.6.2)
     multi_json (1.11.2)
+    nokogiri (1.6.6.2)
+      mini_portile (~> 0.6.0)
     rack (1.6.4)
     rack-protection (1.5.3)
       rack
@@ -25,6 +48,7 @@ GEM
       diff-lcs (>= 1.2.0, < 2.0)
       rspec-support (~> 3.3.0)
     rspec-support (3.3.0)
+    sass (3.4.16)
     sinatra (1.4.6)
       rack (~> 1.4)
       rack-protection (~> 1.4)
@@ -36,15 +60,21 @@ GEM
       rack-test
       sinatra (~> 1.4.0)
       tilt (>= 1.3, < 3)
-    tilt (2.0.1)
+    tilt (1.4.1)
+    xpath (2.0.0)
+      nokogiri (~> 1.3)
 
 PLATFORMS
   ruby
 
 DEPENDENCIES
+  capybara
   fakeredis
+  haml
   rack-test
   redis
   rspec
+  sass
   sinatra
+  sinatra-assetpack!
   sinatra-contrib

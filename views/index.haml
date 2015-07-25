@@ -1,0 +1,10 @@
+%div#create_url.panel
+  %h1 Create your short URLs...
+  %form{action: "/", method: "post"}
+    %input{type: "text", name: 'url', placeholder: 'Your full URL here.', autofocus: true}
+    %input{type: "submit", value: 'Go!'}
+  %p#attribution
+    Background image by
+    %a{href: "https://flic.kr/p/9D1XZA"} Chris Ford
+    %span>, licensed under&nbsp;
+    %a{href: "https://creativecommons.org/licenses/by-nc/2.0/"} CC BY-NC 2.0

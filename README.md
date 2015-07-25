@@ -13,7 +13,11 @@ rackup -p 3000  # start it on port 3000
 
 # Usage - HTML (browser)
 
-Currently, creating short URLs is only supported in the JSON REST interface (see below). To access a short URL, simply visit `http://yoursite.com/name` (which is also returned to you in JSON after you created the short URL), and you will be redirected to the actual URL. 
+A demo of this app can be found at http://jiahao.link
+
+To create short URLs, simply go to `http://yoursite.com` (currently only supports creating URLs with automatically generated names).
+
+To access a short URL, simply visit `http://yoursite.com/name` (which is also returned to you in JSON after you created the short URL), and you will be redirected to the actual URL. 
 
 # Usage - JSON REST
 

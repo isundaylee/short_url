@@ -1,6 +1,9 @@
 require 'bundler/setup'
 require 'sinatra/base'
 require 'sinatra/respond_with'
+require 'sinatra/assetpack'
+require 'haml'
+require 'uri'
 require 'json'
 
 require_relative './url_store'
@@ -8,6 +11,15 @@ require_relative './url_store'
 class ShortURL < Sinatra::Base
 
   register Sinatra::RespondWith
+  register Sinatra::AssetPack
+
+  assets do
+    css :application, [
+      '/css/app.css'
+    ]
+
+    css_compression :sass
+  end
 
   configure do
     @@store = URLStore.new
@@ -19,10 +31,20 @@ class ShortURL < Sinatra::Base
     end
   end
 
-  post '/:name?', provides: [:json] do
+  get '/', provides: [:html] do
+    url = params[:url]
+
+    url.nil? ? (haml :index) : (haml :show, locals: {url: url})
+  end
+
+  post '/:name?', provides: [:html, :json] do
     begin
       name = @@store.create(params[:url], params[:name])
-      respond_json url: "#{base_url}/#{name}"
+      url = "#{base_url}/#{name}"
+      respond_to do |f|
+        f.html { redirect '/?url=' + CGI.escape(url) }
+        f.json { respond_json url: url }
+      end
     rescue URLStore::Exception => e
       exception e
     end
