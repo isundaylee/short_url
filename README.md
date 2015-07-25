@@ -1,4 +1,4 @@
-# Short URL
+# Short URL [![Build Status](https://travis-ci.org/isundaylee/short_url.svg?branch=master)](https://travis-ci.org/isundaylee/short_url)
 
 A simple implementation of URL shortener built with Sinatra with a Redis backend. 
 
