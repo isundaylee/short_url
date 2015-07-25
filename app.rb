@@ -2,7 +2,7 @@ require 'bundler/setup'
 require 'sinatra/base'
 require 'json'
 
-require './url_store'
+require_relative './url_store'
 
 class ShortURL < Sinatra::Base
 
