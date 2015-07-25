@@ -7,6 +7,7 @@ class URLStore
   VALID_NAME_REGEX = /^[a-zA-Z0-9_-]+$/
   VALID_GENERATED_CHARS = ('a'..'z').to_a + ('A'..'Z').to_a + ('0'..'9').to_a
   GENERATED_LENGTH = 2
+  URL_PREFIX_TEST_REGEX = /^[a-zA-Z]*:\/\//
 
   def initialize
     # reads configuration from ENV['REDIS_URL']
@@ -22,6 +23,7 @@ class URLStore
     raise Exception, 'Invalid name. ' unless (name.nil? || self.class.valid_name?(name))
 
     name ||= generate_name
+    url = normalize_url(url)
 
     result = @redis.setnx(redis_key(name), url)
 
@@ -54,6 +56,10 @@ class URLStore
 
     def generate_name
       (0...GENERATED_LENGTH).to_a.map { VALID_GENERATED_CHARS.sample }.join
+    end
+
+    def normalize_url(url)
+      URL_PREFIX_TEST_REGEX =~ url ? url : "http://#{url}"
     end
 
 end

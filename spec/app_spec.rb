@@ -30,4 +30,20 @@ describe ShortURL do
     get "#{response_json['url']}"
     expect(JSON.parse(last_response.body)['actual_url']).to eq('http://example.com')
   end
+
+  it "should prepend http:// appropriately" do
+    post '/', url: 'example.com'
+    expect(last_response).to be_ok
+    response_json = JSON.parse(last_response.body)
+    get "#{response_json['url']}"
+    expect(JSON.parse(last_response.body)['actual_url']).to eq('http://example.com')
+  end
+
+  it "should not prepend http:// when the url already has protocol component" do
+    post '/', url: 'git://example.com'
+    expect(last_response).to be_ok
+    response_json = JSON.parse(last_response.body)
+    get "#{response_json['url']}"
+    expect(JSON.parse(last_response.body)['actual_url']).to eq('git://example.com')
+  end
 end
