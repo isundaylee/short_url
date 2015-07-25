@@ -2,7 +2,10 @@ require 'bundler/setup'
 require 'sinatra/base'
 require 'sinatra/respond_with'
 require 'sinatra/assetpack'
+require 'active_support'
+require 'active_support/core_ext/object/blank'
 require 'haml'
+require 'coffee_script'
 require 'uri'
 require 'json'
 
@@ -16,6 +19,10 @@ class ShortURL < Sinatra::Base
   assets do
     css :application, [
       '/css/app.css'
+    ]
+
+    js :application, [
+      '/js/app.js'
     ]
 
     css_compression :sass
@@ -39,14 +46,17 @@ class ShortURL < Sinatra::Base
 
   post '/:name?', provides: [:html, :json] do
     begin
-      name = @@store.create(params[:url], params[:name])
+      name = @@store.create(params[:url].presence, params[:name].presence)
       url = "#{base_url}/#{name}"
       respond_to do |f|
         f.html { redirect '/?url=' + CGI.escape(url) }
         f.json { respond_json url: url }
       end
-    rescue URLStore::Exception => e
-      exception e
+    rescue URLStore::Error => e
+      respond_to do |f|
+        f.html { haml :index, locals: {url: params[:url], name: params[:name], error: e.message} }
+        f.json { exception e }
+      end
     end
   end
 
@@ -57,8 +67,8 @@ class ShortURL < Sinatra::Base
         f.json { respond_json actual_url: @@store.get(params[:name]) }
       end
     rescue URLStore::NotFoundError => e
-      exception e, 404
-    rescue URLStore::Exception => e
+      exception e
+    rescue URLStore::Error => e
       exception e
     end
   end
@@ -69,7 +79,9 @@ class ShortURL < Sinatra::Base
       obj.to_json
     end
 
-    def exception(e, code = 400)
+    def exception(e)
+      code = 400 if e.is_a? URLStore::ArgumentError
+      code = 404 if e.is_a? URLStore::NotFoundError
       respond_to do |f|
         f.html { error code, e.message }
         f.json { error code, {error: e.message}.to_json }

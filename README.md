@@ -15,7 +15,7 @@ rackup -p 3000  # start it on port 3000
 
 A demo of this app can be found at http://jiahao.link
 
-To create short URLs, simply go to `http://yoursite.com` (currently only supports creating URLs with automatically generated names).
+To create short URLs, simply go to `http://yoursite.com`. You can both create short URLs with custom names or ones with automatically generated names. 
 
 To access a short URL, simply visit `http://yoursite.com/name` (which is also returned to you in JSON after you created the short URL), and you will be redirected to the actual URL. 
 

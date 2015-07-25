@@ -2,8 +2,9 @@ require 'redis'
 
 class URLStore
 
-  class Exception < StandardError; end
-  class NotFoundError < StandardError; end
+  class Error < StandardError; end
+  class ArgumentError < Error; end
+  class NotFoundError < Error; end
 
   VALID_NAME_REGEX = /^[a-zA-Z0-9_-]+$/
   VALID_GENERATED_CHARS = ('a'..'z').to_a + ('A'..'Z').to_a + ('0'..'9').to_a
@@ -21,21 +22,21 @@ class URLStore
   end
 
   def create(url, name)
-    raise Exception, 'Must provide a URL. ' if url.nil?
-    raise Exception, 'Invalid name. ' unless (name.nil? || self.class.valid_name?(name))
+    raise ArgumentError, 'Must provide a URL. ' if url.nil?
+    raise ArgumentError, 'Invalid name. ' unless (name.nil? || self.class.valid_name?(name))
 
     name ||= generate_usable_name
     url = normalize_url(url)
 
     result = @redis.setnx(redis_key(name), url)
 
-    raise Exception, 'Name already taken. ' unless result
+    raise ArgumentError, 'Name already taken. ' unless result
 
     name
   end
 
   def get(name)
-    raise Exception, 'Invalid name. ' if (name.nil? || !self.class.valid_name?(name))
+    raise ArgumentError, 'Invalid name. ' if (name.nil? || !self.class.valid_name?(name))
 
     url = @redis.get(redis_key(name))
 

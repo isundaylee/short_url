@@ -18,6 +18,9 @@ a
   text-decoration: none
   color: #FFF
 
+  &:hover
+    color: darken(#FFF, 30%)
+
 html
   background: url('/images/background.png') no-repeat center center fixed
   background-size: cover
@@ -60,9 +63,6 @@ body
     a
       font-size: 30px
 
-      &:hover
-        color: darken(#FFF, 30%)
-
   input
     position: absolute
     color: #FFF
@@ -74,12 +74,12 @@ body
 
   input[type=text]
     clear: both
-    width: 68%
+    width: 52%
     top: 120px
     font-size: 18px
     border: 1px solid rgba(50, 50, 50, 0)
     background-color: rgba(0, 0, 0, 0.4)
-    padding-right: 18%
+    padding-right: 34%
 
     +placeholder
       color: #FFF
@@ -87,6 +87,19 @@ body
     &:focus
       box-shadow: 0 0 10px rgba(50, 50, 50, 1)
       border: 1px solid rgba(50, 50, 50, 1)
+
+    &.embedded
+      font-size: 12px
+      padding: 5px 2%
+      height: 22px
+      right: 26%
+      margin-top: 6px
+      width: 14%
+      border: none
+
+      &:focus
+        box-shadow: none
+        border: none
 
   input[type=submit]
     width: 12%
@@ -102,9 +115,28 @@ body
       background-color: rgba(0, 0, 0, 0.8)
       box-shadow: 0 0 10px rgba(50, 50, 50, 1)
 
+  #error
+    position: absolute
+    right: 100%
+    text-align: right
+    width: 35%
+    margin: 0
+    margin-right: 5%
+    background-color: rgba(245, 61, 61, 0.7)
+    padding: 10px 2%
+    height: 22px
+    top: 120px
+    color: #FFF
+    border-radius: 6px
+    line-height: 22px
+    display: none
+
   #attribution
     font-size: 15px
     margin-top: 120px
     color: #AAA
     margin-left: 7px
+
+.panel input[name=name]
+  display: none
 

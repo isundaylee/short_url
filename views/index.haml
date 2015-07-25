@@ -1,8 +1,16 @@
+- url ||= ''
+- name ||= ''
+- error ||= ''
+
 %div#create_url.panel
-  %h1 Create your short URLs...
+  %h1
+    Embrace short URLs...
+    %a#show_name_field{href: "#"} Custom name?
   %form{action: "/", method: "post"}
-    %input{type: "text", name: 'url', placeholder: 'Your full URL here.', autofocus: true}
+    %input{type: "text", name: 'url', placeholder: 'Your full URL here.', value: url, autofocus: true}
+    %input.embedded{type: "text", name: 'name', placeholder: 'awesome_name', value: name}
     %input{type: "submit", value: 'Go!'}
+  %p#error= error
   %p#attribution
     Background image by
     %a{href: "https://flic.kr/p/9D1XZA"} Chris Ford

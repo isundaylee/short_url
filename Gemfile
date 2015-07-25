@@ -6,6 +6,8 @@ gem 'redis'
 gem 'sinatra-assetpack', github: 'rstacruz/sinatra-assetpack'
 gem 'haml'
 gem 'sass'
+gem 'coffee-script'
+gem 'activesupport'
 
 group :test do
   gem 'rack-test'
