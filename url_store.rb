@@ -3,6 +3,7 @@ require 'redis'
 class URLStore
 
   class Exception < StandardError; end
+  class NotFoundError < StandardError; end
 
   VALID_NAME_REGEX = /^[a-zA-Z0-9_-]+$/
   VALID_GENERATED_CHARS = ('a'..'z').to_a + ('A'..'Z').to_a + ('0'..'9').to_a
@@ -37,7 +38,7 @@ class URLStore
 
     url = @redis.get(redis_key(name))
 
-    raise Exception, 'Name does not exist. ' if url.nil?
+    raise NotFoundError, 'Name does not exist. ' if url.nil?
 
     url
   end

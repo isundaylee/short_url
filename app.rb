@@ -1,17 +1,16 @@
 require 'bundler/setup'
 require 'sinatra/base'
+require 'sinatra/respond_with'
 require 'json'
 
 require_relative './url_store'
 
 class ShortURL < Sinatra::Base
 
+  register Sinatra::RespondWith
+
   configure do
     @@store = URLStore.new
-  end
-
-  before do
-    content_type :json
   end
 
   helpers do
@@ -20,18 +19,23 @@ class ShortURL < Sinatra::Base
     end
   end
 
-  post '/:name?' do
+  post '/:name?', provides: [:json] do
     begin
       name = @@store.create(params[:url], params[:name])
-      respond url: "#{base_url}/#{name}"
+      respond_json url: "#{base_url}/#{name}"
     rescue URLStore::Exception => e
       exception e
     end
   end
 
-  get '/:name' do
+  get '/:name', provides: [:html, :json] do
     begin
-      respond actual_url: @@store.get(params[:name])
+      respond_to do |f|
+        f.html { redirect @@store.get(params[:name]) }
+        f.json { respond_json actual_url: @@store.get(params[:name]) }
+      end
+    rescue URLStore::NotFoundError => e
+      exception e, 404
     rescue URLStore::Exception => e
       exception e
     end
@@ -39,12 +43,15 @@ class ShortURL < Sinatra::Base
 
   private
 
-    def respond(obj)
+    def respond_json(obj)
       obj.to_json
     end
 
-    def exception(e)
-      error 400, {error: e.message}.to_json
+    def exception(e, code = 400)
+      respond_to do |f|
+        f.html { error code, e.message }
+        f.json { error code, {error: e.message}.to_json }
+      end
     end
 
 end

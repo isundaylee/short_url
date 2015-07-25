@@ -11,9 +11,11 @@ git clone https://github.com/isundaylee/short_url.git
 rackup -p 3000  # start it on port 3000
 ```
 
-# Usage
+# Usage - HTML (browser)
 
-Currently, only a basic JSON REST interface is implemented. 
+Currently, creating short URLs is only supported in the JSON REST interface (see below). To access a short URL, simply visit `http://yoursite.com/name` (which is also returned to you in JSON after you created the short URL), and you will be redirected to the actual URL. 
+
+# Usage - JSON REST
 
 To create a short URL (you can also omit the name parameter to get a randomly generated name that could be as short as 2 characters): 
 
