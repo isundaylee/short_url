@@ -97,3 +97,9 @@ DEPENDENCIES
   sinatra
   sinatra-assetpack!
   sinatra-contrib
+
+RUBY VERSION
+   ruby 2.3.8p459
+
+BUNDLED WITH
+   1.17.3
