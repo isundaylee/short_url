@@ -1,4 +1,4 @@
-FROM 'ruby:2.3-alpine'
+FROM 'ruby:2.6.5-alpine'
 
 # RUN bundle config --global frozen 1
 
@@ -17,4 +17,4 @@ RUN bundle install
 
 COPY . .
 
-CMD ["rackup"]
+CMD ["rackup", "--host", "0.0.0.0"]
