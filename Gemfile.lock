@@ -1,5 +1,5 @@
 GIT
-  remote: git://github.com/rstacruz/sinatra-assetpack.git
+  remote: https://github.com/rstacruz/sinatra-assetpack.git
   revision: c8fde2896b32c029d1ef34dd2207cf65d8742d16
   specs:
     sinatra-assetpack (0.3.5)
@@ -93,7 +93,7 @@ GEM
     temple (0.8.2)
     thread_safe (0.3.6)
     tilt (1.4.1)
-    tzinfo (1.2.5)
+    tzinfo (1.2.10)
       thread_safe (~> 0.1)
     xpath (3.2.0)
       nokogiri (~> 1.8)
